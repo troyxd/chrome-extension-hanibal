@@ -1,12 +1,20 @@
+import { getActiveTabURL } from "./utils.js";
+
 // adding a new bookmark row to the popup
-const addNewBookmark = () => {};
 
-const viewBookmarks = () => {};
+const addNewBookmark = () => { };
 
-const onPlay = e => {};
+const viewBookmarks = () => { };
 
-const onDelete = e => {};
+const onPlay = e => { };
 
-const setBookmarkAttributes =  () => {};
+const onDelete = e => { };
 
-document.addEventListener("DOMContentLoaded", () => {});
+const setBookmarkAttributes = () => { };
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const activeTab = await getActiveTabURL();
+    if (activeTab.url.includes(".hanibal.cz")) {
+        chrome.storage.sync.get([storageKey])
+    }
+});
