@@ -37,9 +37,9 @@
   ],
   "action": {
     "default_icon": {
-      "16": "assets/ext-icon.png",
-      "24": "assets/ext-icon.png",
-      "32": "assets/ext-icon.png"
+      "16": "assets/logo.png",
+      "24": "assets/logo.png",
+      "32": "assets/logo.png"
     },
     "default_title": "Hanibal shoe labels",
     "default_popup": "popup.html"
