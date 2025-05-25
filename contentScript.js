@@ -1,10 +1,4 @@
 (() => {
-    let submitButtons;
-    let currentProducts = [];
-    let storageKey = "key";
-    // TODO - save info about each product in storage using the product id from the URL as a key (should help with easier removing of products later)
-    let productID;
-
     chrome.runtime.onMessage.addListener((obj, sender, response) => {
         const { type, value, videoId } = obj;
 
@@ -13,33 +7,78 @@
         }
     });
 
-    const fetchProductList = () => {
+    const fetchParsedProductList = () => {
         return new Promise((resolve) => {
-            chrome.storage.sync.get([storageKey], (data) => {
-                resolve(data[storageKey] ? JSON.parse(data[storageKey]) : [])
+            chrome.storage.sync.get(null, (data) => {
+                Object.keys(data).forEach(key => {
+                    data[key] = JSON.parse(data[key]);
+                })
+                resolve(data);
+            })
+
+        })
+    }
+
+    const fetchProduct = (productID) => {
+        return new Promise((resolve) => {
+            chrome.storage.sync.get([productID], (data) => {
+                resolve(data[productID] ? JSON.parse(data[productID]) : {})
             })
         })
     }
 
     const tabUpdated = () => {
+        const submitBlock = document.getElementsByClassName("submit-block")[0];
+        if (!submitBlock) return;
+
         const addBtnExists = document.getElementsByClassName("add-btn")[0];
-
         if (!addBtnExists) {
-            const addBtn = document.createElement("img");
-
-            addBtn.src = chrome.runtime.getURL("assets/add.png");
-            addBtn.className = "btn btn-fav add-btn";
-            addBtn.title = "Click to add item to list";
-
-            submitButtons = document.getElementsByClassName("submit-block")[0];
-
-            submitButtons.append(addBtn);
-            addBtn.addEventListener("click", addNewItemEventHandler);
-            // chrome.storage.sync.clear(() => {
-            //     console.log("chrome sync storage cleared.")
-            // })
+            createAddButton(submitBlock);
+            createClearButton(submitBlock);
         }
     }
+
+    const createAddButton = (parentElement) => {
+        const addBtn = document.createElement("img");
+
+        addBtn.src = chrome.runtime.getURL("assets/add.png");
+        addBtn.className = "btn btn-fav add-btn";
+        addBtn.title = "Click to add item to list";
+
+
+        parentElement.append(addBtn);
+        addBtn.addEventListener("click", addNewItemEventHandler);
+    }
+
+    const createClearButton = (parentElement) => {
+        const clearBtn = document.createElement("img");
+
+        clearBtn.src = chrome.runtime.getURL("assets/delete.png");
+        clearBtn.className = "btn btn-fav clear-btn";
+        clearBtn.title = "Click to clear the list";
+
+        parentElement.append(clearBtn);
+
+        clearBtn.addEventListener("click", () => {
+            chrome.storage.sync.clear(() => {
+                console.log("chrome sync storage cleared.");
+            });
+        });
+    }
+
+    // TODO: still doesnt work, tabUpdated() isn't called when hash changes and page is re-rendered
+    const observeSubmitBlock = () => {
+        const targetElement = document.getElementsByClassName("submit-block")[0];
+        if (!targetElement) return;
+        const observerConfig = {
+            childList: true,    // watch for addition or removal of child elements to target element,
+            subtree: true       // watch for changes in the entire subtree of the target element
+        };
+        const observer = new MutationObserver(() => {
+            tabUpdated();
+        });
+        observer.observe(targetElement, observerConfig);
+    };
 
     const addNewItemEventHandler = async () => {
 
@@ -49,22 +88,25 @@
         const priceStringWithDots = priceString.replace(',', '.');
         const productPrice = parseFloat(priceStringWithDots);
         const productDescription = product.querySelector("p.annotation").innerText;
+        const productID = product.querySelector("div.product-code > div:nth-child(2)").innerText;
 
         const newProduct = {
             name: productName,
             desc: productDescription,
-            price: productPrice
+            price: productPrice,
+            id: productID,
         };
 
-        currentProducts = await fetchProductList();
-        currentProducts.push(newProduct);
-
-        chrome.storage.sync.set({ [storageKey]: JSON.stringify(currentProducts) }).then(() => {
-            fetchProductList().then((data) => {
-                console.log(data);
+        chrome.storage.sync.set({ [productID]: JSON.stringify(newProduct) }).then(() => {
+            fetchProduct(productID).then((product) => {
+                console.log(product);
+            });
+            fetchParsedProductList().then((productList) => {
+                console.log(productList);
             });
         });
     }
 
     tabUpdated();
+    observeSubmitBlock();
 })();
