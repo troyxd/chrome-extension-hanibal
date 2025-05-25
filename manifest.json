@@ -26,7 +26,6 @@
     {
       "resources": [
         "assets/add.png",
-        "assets/play.png",
         "assets/delete.png",
         "assets/save.png"
       ],
