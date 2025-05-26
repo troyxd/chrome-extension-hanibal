@@ -1,20 +1,40 @@
-import { getActiveTabURL } from "./utils.js";
+import { fetchParsedProductList } from "./utils.js";
 
-// adding a new bookmark row to the popup
+const createProductElement = (productsContainer, productObject) => {
+    const productElement = document.createElement("div");
+    productElement.className = "product-item";
+    productElement.id = productObject.id;
 
-const addNewBookmark = () => { };
+    const nameElement = document.createElement("h2");
+    nameElement.innerText = productObject.name;
 
-const viewBookmarks = () => { };
+    const priceElement = document.createElement("p");
+    priceElement.innerText = `${productObject.price} Kč`;
 
-const onPlay = e => { };
+    const descElement = document.createElement("p");
+    descElement.innerText = productObject.desc;
 
-const onDelete = e => { };
+    productElement.appendChild(nameElement);
+    productElement.appendChild(priceElement);
+    productElement.appendChild(descElement);
 
-const setBookmarkAttributes = () => { };
+    productsContainer.appendChild(productElement);
+}
+
+const showStoredProducts = async () => {
+    const productsList = await fetchParsedProductList();
+    const productContainer = document.getElementById("products");
+    productContainer.innerHTML = ""; // Clear previous products
+    for (const [key, product] of Object.entries(productsList)) {
+        createProductElement(productContainer, product);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const activeTab = await getActiveTabURL();
-    if (activeTab.url.includes(".hanibal.cz")) {
-        chrome.storage.sync.get([storageKey])
-    }
+    await showStoredProducts(); // Show products on popup load
+});
+
+// re-render popup when storage changes (when product is deleted)
+chrome.storage.onChanged.addListener(async () => {
+    await showStoredProducts(); // Update products when storage changes
 });

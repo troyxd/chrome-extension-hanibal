@@ -7,26 +7,6 @@
         }
     });
 
-    const fetchParsedProductList = () => {
-        return new Promise((resolve) => {
-            chrome.storage.sync.get(null, (data) => {
-                Object.keys(data).forEach(key => {
-                    data[key] = JSON.parse(data[key]);
-                })
-                resolve(data);
-            })
-
-        })
-    }
-
-    const fetchProduct = (productID) => {
-        return new Promise((resolve) => {
-            chrome.storage.sync.get([productID], (data) => {
-                resolve(data[productID] ? JSON.parse(data[productID]) : {})
-            })
-        })
-    }
-
     const tabUpdated = () => {
         const submitBlock = document.getElementsByClassName("submit-block")[0];
         if (!submitBlock) return;
@@ -80,7 +60,7 @@
         observer.observe(targetElement, observerConfig);
     };
 
-    const addNewItemEventHandler = async () => {
+    const addNewItemEventHandler = () => {
 
         const product = document.getElementsByClassName("main product-main")[0];
         const productName = product.querySelector("h1.h2").innerText;
@@ -97,14 +77,7 @@
             id: productID,
         };
 
-        chrome.storage.sync.set({ [productID]: JSON.stringify(newProduct) }).then(() => {
-            fetchProduct(productID).then((product) => {
-                console.log(product);
-            });
-            fetchParsedProductList().then((productList) => {
-                console.log(productList);
-            });
-        });
+        chrome.storage.sync.set({ [productID]: JSON.stringify(newProduct) });
     }
 
     tabUpdated();
