@@ -63,3 +63,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 chrome.storage.onChanged.addListener(async () => {
     await showStoredProducts();
 });
+
+// TODO: add button to create page to print all stored products
