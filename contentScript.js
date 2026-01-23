@@ -1,8 +1,6 @@
 (() => {
-  chrome.runtime.onMessage.addListener((obj, sender, response) => {
-    const { type } = obj;
-
-    if (type === "NEW") {
+  chrome.runtime.onMessage.addListener((message, sender, _response) => {
+    if (message.type === "NEW") {
       tabUpdated();
     }
   });
