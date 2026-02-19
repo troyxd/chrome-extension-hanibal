@@ -1,6 +1,7 @@
 (() => {
-  chrome.runtime.onMessage.addListener((message, sender, _response) => {
+  chrome.runtime.onMessage.addListener((message, _sender, _response) => {
     if (message.type === "NEW") {
+      console.log("Message NEW recieved")
       tabUpdated();
     }
   });
@@ -56,8 +57,7 @@
     });
 
     if (shouldUpdate) {
-      // Add a small delay to ensure DOM is fully updated
-      setTimeout(tabUpdated, 100);
+      tabUpdated();
     }
   }
 
@@ -102,27 +102,6 @@
     chrome.storage.sync.set({ [productID]: JSON.stringify(newProduct) });
   }
 
-  tabUpdated();
   setupGlobalObserver();
-
-  // Also watch for hash changes and popstate events
-  // idk if this is needed
-  window.addEventListener('hashchange', () => {
-    setTimeout(tabUpdated, 100);
-  });
-
-  window.addEventListener('popstate', () => {
-    setTimeout(tabUpdated, 100);
-  });
-
-  // TODO: this is propably redundant but leaving it for now
-  // Fallback: periodic check every 3 seconds to ensure buttons stay on page
-  setInterval(() => {
-    const submitBlock = document.querySelector(".submit-block");
-    const addBtnExists = submitBlock && submitBlock.querySelector(".add-btn");
-    if (submitBlock && !addBtnExists) {
-      console.log("Periodic check: buttons missing, re-adding...");
-      tabUpdated();
-    }
-  }, 3000);
+  tabUpdated();
 })();
