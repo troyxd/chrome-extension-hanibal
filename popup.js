@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 const printProducts = async () => {
   const products = await fetchParsedProductList();
   
-  // TODO: maybe just check somehow if chrome storage is empty instead of fetching all products
   if (Object.keys(products).length === 0) {
     console.log("no products to print")
     return
