@@ -4,7 +4,8 @@
   "description": "Create labels for shoes",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "printing"
   ],
   "host_permissions": [
     "https://*.hanibal.cz/*"

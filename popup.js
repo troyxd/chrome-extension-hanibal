@@ -52,16 +52,41 @@ document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTabURL();
 
   if (!activeTab.url.includes("hanibal.cz")) {
+    // clear buttons
+    buttons.innerHTML = ""
     const title = document.getElementsByTagName("h1")[0];
     title.innerText = "Not on hanibal.cz";
     return;
   }
   await showStoredProducts();
+  renderPrintButton()
 });
 
-// re-render popup when storage changes (when product is deleted)
+const printProducts = async () => {
+  const products = await fetchParsedProductList();
+  
+  // TODO: maybe just check somehow if chrome storage is empty instead of fetching all products
+  if (Object.keys(products).length === 0) {
+    console.log("no products to print")
+    return
+  }
+
+  chrome.tabs.create({url: "print.html"})
+}
+
+const renderPrintButton = () => {
+  const printButton = document.createElement("button");
+  printButton.id = "printButton";
+  printButton.innerText = "Print";
+  printButton.addEventListener("click", async () => printProducts() )
+
+  buttons.appendChild(printButton);
+}
+
+// re-render products when storage changes (when product is deleted)
 chrome.storage.onChanged.addListener(async () => {
   await showStoredProducts();
+  // TODO: resize popup
 });
 
 // TODO: add button to create page to print all stored products
