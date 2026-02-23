@@ -1,33 +1,32 @@
 import { fetchParsedProductList } from "./utils.js";
 
-const printProduct = async (product) => {
-  // TODO: format the productDiv
-  const productDiv = document.createElement("div");
-  productDiv.id = product.id
+const createLabel = (product) => {
+  const label = document.createElement("div")
 
-  const header = document.createElement("h1")
-  header.innerText = product.name
-  productDiv.appendChild(header)
+  label.className = "label"
+  label.innerHTML = `
+    <div>
+      <h1 class="product-brand">${product.brand}</h1>
+      <h2 class="product-name">${product.name}</h2>
+      <p class="product-description">${product.desc}</p>
+      <p class="product-price">${product.price}</p>
+    </div>
+  `
 
-  const description = document.createElement("p")
-  description.innerText = product.desc
-  productDiv.appendChild(description)
-
-  const price = document.createElement("p")
-  price.innerText = product.price
-  productDiv.appendChild(price)
-
-  content.appendChild(productDiv)
+  document.body.appendChild(label)
 }
 
-const printProducts = async () => {
-  const productList = await fetchParsedProductList();
+// get products from storage
+const productList = await fetchParsedProductList();
 
-  for (const product of Object.values(productList)) {
-    printProduct(product);
-  }
+const existingLabelIds = []
+
+for (const child of document.body.children) {
+  existingLabelIds.push(child.id)
 }
 
+for (const product of Object.values(productList)) {
+  createLabel(product);
+}
 
-printProducts();
 window.print();
