@@ -11,9 +11,9 @@ const createProductElement = (productsContainer, productObject) => {
   productElement.className = "product-item";
   productElement.id = productObject.id;
 
-  const nameElement = document.createElement("div");
-  nameElement.innerText = productObject.name;
-  nameElement.className = "product-name";
+  const titleElement = document.createElement("div");
+  titleElement.innerText = productObject.brand + ' ' + productObject.name;
+  titleElement.className = "product-title";
 
   const priceElement = document.createElement("div");
   priceElement.innerText = `${productObject.price} Kč`;
@@ -26,7 +26,7 @@ const createProductElement = (productsContainer, productObject) => {
     removeProduct(productObject.id)
   });
 
-  productElement.appendChild(nameElement);
+  productElement.appendChild(titleElement);
   productElement.appendChild(priceElement);
   productElement.appendChild(deleteBtn);
 
@@ -64,20 +64,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 const printProducts = async () => {
   const products = await fetchParsedProductList();
-  
+
   if (Object.keys(products).length === 0) {
     console.log("no products to print")
     return
   }
 
-  chrome.tabs.create({url: "print.html"})
+  chrome.tabs.create({ url: "print.html" })
 }
 
 const renderPrintButton = () => {
   const printButton = document.createElement("button");
   printButton.id = "printButton";
   printButton.innerText = "Print";
-  printButton.addEventListener("click", async () => printProducts() )
+  printButton.addEventListener("click", async () => printProducts())
 
   buttons.appendChild(printButton);
 }

@@ -32,7 +32,7 @@
   }
 }
 
-.product-name {
+.product-title {
   grid-area: name;
   font-size: 14px;
   font-weight: bold;
