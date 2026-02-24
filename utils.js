@@ -20,9 +20,4 @@ export async function fetchParsedProductList() {
 export async function fetchProduct(productID) {
   const productData = await chrome.storage.sync.get(productID);
   return productData[productID] ? JSON.parse(data[productID]) : {};
-  // return new Promise((resolve) => {
-  //     chrome.storage.sync.get([productID], (data) => {
-  //         resolve(data[productID] ? JSON.parse(data[productID]) : {})
-  //     })
-  // })
 }
