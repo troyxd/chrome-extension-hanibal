@@ -24,6 +24,7 @@
   const BRAND_NAMES = [
     "Asolo",
     "Ocún",
+    "Ocun",
     "Warmpeace",
     "Alfa",
     "Altra",
@@ -33,7 +34,6 @@
     "Bosky",
     "Camp",
     "Columbia",
-    "Doldy",
     "EB",
     "Extremities",
     "Fibertec",
