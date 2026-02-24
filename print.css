@@ -1,0 +1,39 @@
+* {
+  --label-width: 100mm;
+  --label-height: 60mm;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+
+.label-grid {
+  display: grid;
+  grid-template-columns: repeat(2, var(--label-width));
+  gap: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.label {
+  width: var(--label-width);
+  height: var(--label-height);
+  border: 1px dotted #ccc;
+  padding: 5mm;
+  box-sizing: border-box;
+
+  /* Prevents a label from being split between two pages */
+  break-inside: avoid;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media print {
+  /* Hide browser headers/footers */
+  @page { margin: 0; }
+  .no-print { display: none; }
+}

@@ -5,15 +5,14 @@ const createLabel = (product) => {
 
   label.className = "label"
   label.innerHTML = `
-    <div>
-      <h1 class="product-brand">${product.brand}</h1>
-      <h2 class="product-name">${product.name}</h2>
-      <p class="product-description">${product.desc}</p>
-      <p class="product-price">${product.price}</p>
-    </div>
+    <h1 class="product-brand">${product.brand}</h1>
+    <h2 class="product-name">${product.name}</h2>
+    <p class="product-description">${product.desc}</p>
+    <p class="product-price">${product.price}</p>
   `
+  const labelGrid = document.getElementById("label-grid");
 
-  document.body.appendChild(label)
+  labelGrid.appendChild(label)
 }
 
 // get products from storage
