@@ -62,7 +62,7 @@
     console.log("Adding add button to submit block");
     const addBtn = document.createElement("img");
 
-    addBtn.src = chrome.runtime.getURL("assets/add.png");
+    addBtn.src = chrome.runtime.getURL("assets/add.svg");
     addBtn.className = "btn btn-fav add-btn";
     addBtn.title = "Click to add item to list";
 

@@ -26,9 +26,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/add.png",
-        "assets/delete.png",
-        "assets/save.png"
+        "assets/add.svg"
       ],
       "matches": [
         "https://*.hanibal.cz/*"
