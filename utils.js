@@ -19,5 +19,5 @@ export async function fetchParsedProductList() {
 
 export async function fetchProduct(productID) {
   const productData = await chrome.storage.sync.get(productID);
-  return productData[productID] ? JSON.parse(data[productID]) : {};
+  return productData[productID] ? JSON.parse(productData[productID]) : {};
 }
