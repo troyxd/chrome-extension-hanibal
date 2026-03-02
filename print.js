@@ -1,16 +1,22 @@
 import { fetchParsedProductList } from "./utils.js";
 
+const labelGrid = document.getElementById("label-grid")
+
 const createLabel = (product) => {
   const label = document.createElement("div")
 
   label.className = "label"
   label.innerHTML = `
-    <h1 class="product-brand">${product.brand}</h1>
-    <h2 class="product-name">${product.name}</h2>
-    <p class="product-description">${product.desc}</p>
-    <p class="product-price">${product.price}</p>
+    <h1 class="brand-name title">${product.brand}</h1>
+    <h2 class="product-name title">${product.name}</h2>
+    <div class="desc-section">
+      <p class="product-desc">${product.desc}</p>
+    </div>
+    <footer class="label-footer">
+      <img src="assets/logo.png" class="shop-logo"></img>
+      <span class="product-price">${product.price.toFixed(0)} Kč</span>
+    </footer>
   `
-  const labelGrid = document.getElementById("label-grid");
 
   labelGrid.appendChild(label)
 }
@@ -18,11 +24,8 @@ const createLabel = (product) => {
 // get products from storage
 const productList = await fetchParsedProductList();
 
-const existingLabelIds = []
-
-for (const child of document.body.children) {
-  existingLabelIds.push(child.id)
-}
+// clear existing labels
+labelGrid.innerHTML = "";
 
 for (const product of Object.values(productList)) {
   createLabel(product);

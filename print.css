@@ -1,6 +1,10 @@
 * {
-  --label-width: 100mm;
-  --label-height: 60mm;
+  --label-width: 93mm;
+  --label-height: 55mm;
+  --font: 'Inter', sans-serif;
+  --title-font-size: 18pt;
+  --price-font-size: 18pt;
+  --desc-font-size: 11pt;
 }
 
 body {
@@ -11,7 +15,7 @@ body {
 
 .label-grid {
   display: grid;
-  grid-template-columns: repeat(2, var(--label-width));
+  grid-template-columns: repeat(3, var(--label-width));
   gap: 0;
   padding: 0;
   justify-content: center;
@@ -21,7 +25,7 @@ body {
   width: var(--label-width);
   height: var(--label-height);
   border: 1px dotted #ccc;
-  padding: 5mm;
+  padding: 3mm 6mm 2mm;
   box-sizing: border-box;
 
   /* Prevents a label from being split between two pages */
@@ -29,7 +33,65 @@ body {
 
   display: flex;
   flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  font-family: var(--font);
+  color: #000000;
+}
+
+.label > * {
+  width: 100%;
+  text-align: center;
+}
+
+.brand-name {
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.product-name {
+  font-weight: 700;
+}
+
+.title {
+  font-size: var(--title-font-size);
+  margin: 4px 0px 5px;
+}
+
+.desc-section {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.product-desc {
+  font-size: var(--desc-font-size);
+  font-style: italic;
+  color: #444444;
+  text-align: left;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.label-footer {
+  display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+}
+
+.shop-logo {
+  height: 10mm;
+  width: auto;
+}
+
+.product-price {
+  font-size: var(--price-font-size);
+  font-weight: 800;
+  align-self: center;
 }
 
 @media print {
