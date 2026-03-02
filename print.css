@@ -1,14 +1,14 @@
 * {
   --label-width: 93mm;
   --label-height: 55mm;
-  --font: 'Inter', sans-serif;
+  --font: 'Arial', sans-serif;
   --title-font-size: 18pt;
-  --price-font-size: 18pt;
+  --price-font-size: 21pt;
   --desc-font-size: 11pt;
 }
 
 body {
-  margin: 0;
+  margin: 15px 0;
   padding: 0;
   background-color: white;
 }
@@ -25,7 +25,7 @@ body {
   width: var(--label-width);
   height: var(--label-height);
   border: 1px dotted #ccc;
-  padding: 3mm 6mm 2mm;
+  padding: 2mm 6mm 2mm;
   box-sizing: border-box;
 
   /* Prevents a label from being split between two pages */
@@ -90,7 +90,7 @@ body {
 
 .product-price {
   font-size: var(--price-font-size);
-  font-weight: 800;
+  font-weight: 600;
   align-self: center;
 }
 
