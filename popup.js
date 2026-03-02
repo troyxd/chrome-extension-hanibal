@@ -8,27 +8,24 @@ const removeProduct = (productID) => {
 
 const createProductElement = (productsContainer, productObject) => {
   const productElement = document.createElement("div");
-  productElement.className = "product-item";
+  productElement.className = "product-container";
   productElement.id = productObject.id;
 
-  const titleElement = document.createElement("div");
-  titleElement.innerText = productObject.brand + ' ' + productObject.name;
-  titleElement.className = "product-title";
-
-  const priceElement = document.createElement("div");
-  priceElement.innerText = `${productObject.price} Kč`;
-  priceElement.className = "product-price";
-
-  const deleteBtn = document.createElement("img");
-  deleteBtn.src = "assets/delete.svg";
-  deleteBtn.className = "delete-btn";
+  productElement.innerHTML = `
+    <div class="product-title">
+      <div class="brand-name">${productObject.brand}</div>
+      <div class="product-name">${productObject.name}</div>
+    </div>
+    <div class="product-price">${productObject.price}</div>
+    <div class="product-actions">
+      <img class="delete-btn btn" src="assets/delete.svg">
+      <img class="edit-btn btn" src="assets/edit.svg">
+    </div>
+  `
+  const deleteBtn = productElement.querySelector(".delete-btn")
   deleteBtn.addEventListener("click", () => {
     removeProduct(productObject.id)
   });
-
-  productElement.appendChild(titleElement);
-  productElement.appendChild(priceElement);
-  productElement.appendChild(deleteBtn);
 
   productsContainer.appendChild(productElement);
 }
@@ -54,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!activeTab.url.includes("hanibal.cz")) {
     // clear buttons
     buttons.innerHTML = ""
+    products.innerHTML = ""
     const title = document.getElementsByTagName("h1")[0];
     title.innerText = "Not on hanibal.cz";
     return;
