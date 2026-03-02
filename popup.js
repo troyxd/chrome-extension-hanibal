@@ -1,8 +1,34 @@
-import { fetchParsedProductList, getActiveTabURL } from "./utils.js";
+import { fetchParsedProductList, fetchProduct, getActiveTabURL } from "./utils.js";
 
 const removeProduct = (productID) => {
   chrome.storage.sync.remove(productID, () => {
     console.log(`Removed product ${productID} from storage.`)
+  })
+  showStoredProducts();
+  // TODO: resize popup
+}
+
+const editProduct = async (productID) => {
+  const productObject = await fetchProduct(productID);
+  if (Object.keys(productObject).length === 0) return;
+
+  const productElement = document.getElementById(productID);
+  const productValues = productElement.querySelector(".product-title");
+
+  productValues.innerHTML = `
+    <input class="brand-input" type="text" value="${productObject.brand}">
+    <input class="name-input" type="text" value="${productObject.name}">
+  `;
+
+  const saveBtn = productElement.querySelector(".edit-btn");
+  saveBtn.innerHTML = '<img src="assets/save.svg">';
+  saveBtn.style = "background-color: #9ede87";
+  saveBtn.addEventListener("click", () => {
+    // TODO: this works but is kinda lagy for some reason
+    productObject.brand = productValues.querySelector(".brand-input").value
+    productObject.name = productValues.querySelector(".name-input").value
+    chrome.storage.sync.set({ [productID]: JSON.stringify(productObject) })
+    showStoredProducts();
   })
 }
 
@@ -18,14 +44,19 @@ const createProductElement = (productsContainer, productObject) => {
     </div>
     <div class="product-price">${productObject.price}</div>
     <div class="product-actions">
-      <img class="delete-btn btn" src="assets/delete.svg">
-      <img class="edit-btn btn" src="assets/edit.svg">
+      <button class="delete-btn btn"><img src="assets/delete.svg"></button>
+      <button class="edit-btn btn"><img src="assets/edit.svg"></button>
     </div>
   `
   const deleteBtn = productElement.querySelector(".delete-btn")
   deleteBtn.addEventListener("click", () => {
     removeProduct(productObject.id)
   });
+
+  const editBtn = productElement.querySelector(".edit-btn")
+  editBtn.addEventListener("click", async () => {
+    await editProduct(productObject.id)
+  })
 
   productsContainer.appendChild(productElement);
 }
@@ -65,7 +96,7 @@ const printProducts = async () => {
 
   if (Object.keys(products).length === 0) {
     console.log("no products to print")
-    return
+    return;
   }
 
   chrome.tabs.create({ url: "print.html" })
@@ -80,10 +111,9 @@ const renderPrintButton = () => {
   buttons.appendChild(printButton);
 }
 
+// EDIT: call showStoredProducts() menually instead of on each change
 // re-render products when storage changes (when product is deleted)
-chrome.storage.onChanged.addListener(async () => {
-  await showStoredProducts();
-  // TODO: resize popup
-});
+// chrome.storage.onChanged.addListener(async () => {
+//   await showStoredProducts();
+// });
 
-// TODO: add button to create page to print all stored products

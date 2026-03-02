@@ -18,7 +18,6 @@
   gap: 2px;
   column-gap: 2px;
   padding: 10px 0;
-  /* background-color: black; */
 }
 
 .product-container > * {
@@ -29,19 +28,30 @@
 
 .delete-btn {
   &:hover {
-    border-color: #cc1111;
+    background-color: #fa4646;
+  }
+}
+
+.edit-btn {
+  &:hover {
+    background-color: #e1e3e6;
   }
 }
 
 .btn {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   grid-area: button;
   cursor: pointer;
-  padding: 3%;
+  padding: 2px;
   margin: 0 3px;
   border-radius: 20%;
   border: 2px solid;
+}
+
+.btn > img {
+  height: 100%;
+  width: auto;
 }
 
 .product-actions {
@@ -53,6 +63,14 @@
   grid-area: name;
   font-size: 14px;
   font-weight: bold;
+}
+
+.brand-input {
+  width: 100%;
+}
+
+.name-input {
+  width: 100%;
 }
 
 .product-price {
