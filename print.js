@@ -7,8 +7,8 @@ const createLabel = (product) => {
 
   label.className = "label"
   label.innerHTML = `
-    <h1 class="brand-name title">${product.brand}</h1>
-    <h2 class="product-name title">${product.name}</h2>
+    <h1 class="brand-name">${product.brand}</h1>
+    <h2 class="product-name">${product.name}</h2>
     <div class="desc-section">
       <p class="product-desc">${product.desc}</p>
     </div>
