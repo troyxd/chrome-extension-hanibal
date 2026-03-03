@@ -4,7 +4,7 @@ const removeProduct = (productID) => {
   chrome.storage.sync.remove(productID, () => {
     console.log(`Removed product ${productID} from storage.`)
   })
-  showStoredProducts();
+  renderPopup();
   // TODO: resize popup
 }
 
@@ -23,16 +23,16 @@ const editProduct = async (productID) => {
   const saveBtn = productElement.querySelector(".edit-btn");
   saveBtn.innerHTML = '<img src="assets/save.svg">';
   saveBtn.style = "background-color: #9ede87";
-  saveBtn.addEventListener("click", () => {
+  saveBtn.addEventListener("click", async () => {
     // TODO: this works but is kinda lagy for some reason
     productObject.brand = productValues.querySelector(".brand-input").value
     productObject.name = productValues.querySelector(".name-input").value
     chrome.storage.sync.set({ [productID]: JSON.stringify(productObject) })
-    showStoredProducts();
+    await renderPopup();
   })
 }
 
-const createProductElement = (productsContainer, productObject) => {
+const createProductElement = (productObject) => {
   const productElement = document.createElement("div");
   productElement.className = "product-container";
   productElement.id = productObject.id;
@@ -42,7 +42,9 @@ const createProductElement = (productsContainer, productObject) => {
       <div class="brand-name">${productObject.brand}</div>
       <div class="product-name">${productObject.name}</div>
     </div>
-    <div class="product-price">${productObject.price}</div>
+    <div class="product-price">
+      <p>${productObject.price}</p>
+    </div>
     <div class="product-actions">
       <button class="delete-btn btn"><img src="assets/delete.svg"></button>
       <button class="edit-btn btn"><img src="assets/edit.svg"></button>
@@ -58,37 +60,44 @@ const createProductElement = (productsContainer, productObject) => {
     await editProduct(productObject.id)
   })
 
-  productsContainer.appendChild(productElement);
+  productsDiv.appendChild(productElement);
 }
 
-const showStoredProducts = async () => {
-  const productContainer = document.getElementById("products");
-  productContainer.innerHTML = ""; // Clear previous products
+const renderProducts = (productsList) => {
+  // clear previous content
+  productsDiv.innerHTML = "";
 
-  const productsList = await fetchParsedProductList();
-  const productsIDs = Object.keys(productsList);
-  if (productsIDs.length === 0) {
-    productContainer.innerText = "No products stored.";
+  for (const id of Object.keys(productsList)) {
+    createProductElement(productsList[id]);
+  }
+}
+
+const renderPopup = async () => {
+  const activeTab = await getActiveTabURL();
+
+  // clear previous content
+  buttonsDiv.innerHTML = ""
+  productsDiv.innerHTML = ""
+
+  if (!activeTab.url.includes("hanibal.cz")) {
+    productsDiv.innerText = "Nejsi na stránkách hanibal.cz";
     return;
   }
-  for (const id of productsIDs) {
-    createProductElement(productContainer, productsList[id]);
+  
+  const productsList = await fetchParsedProductList();
+
+  const productsIDs = Object.keys(productsList);
+  if (productsIDs.length === 0) {
+    productsDiv.innerText = "Žádné uložené boty...";
+    return;
   }
+  
+  renderPrintButton();
+  renderProducts(productsList);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const activeTab = await getActiveTabURL();
-
-  if (!activeTab.url.includes("hanibal.cz")) {
-    // clear buttons
-    buttons.innerHTML = ""
-    products.innerHTML = ""
-    const title = document.getElementsByTagName("h1")[0];
-    title.innerText = "Not on hanibal.cz";
-    return;
-  }
-  await showStoredProducts();
-  renderPrintButton()
+  await renderPopup();
 });
 
 const printProducts = async () => {
@@ -108,12 +117,5 @@ const renderPrintButton = () => {
   printButton.innerText = "Print";
   printButton.addEventListener("click", async () => printProducts())
 
-  buttons.appendChild(printButton);
+  buttonsDiv.appendChild(printButton);
 }
-
-// EDIT: call showStoredProducts() menually instead of on each change
-// re-render products when storage changes (when product is deleted)
-// chrome.storage.onChanged.addListener(async () => {
-//   await showStoredProducts();
-// });
-
