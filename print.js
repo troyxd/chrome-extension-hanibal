@@ -31,4 +31,7 @@ for (const product of Object.values(productList)) {
   createLabel(product);
 }
 
-window.print();
+// Small timeout to ensure fonts are loaded
+setTimeout(() => {
+  window.print();
+}, 100);;
