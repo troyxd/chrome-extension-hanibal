@@ -1,4 +1,4 @@
-import { fetchParsedProductList } from "./utils.js";
+import { fetchParsedProductList } from "../utils.js";
 
 const labelGrid = document.getElementById("label-grid")
 

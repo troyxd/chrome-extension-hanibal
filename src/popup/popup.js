@@ -1,4 +1,4 @@
-import { fetchParsedProductList, fetchProduct, getActiveTabURL } from "./utils.js";
+import { fetchParsedProductList, fetchProduct, getActiveTabURL } from "../utils.js";
 
 const removeProduct = (productID) => {
   chrome.storage.sync.remove(productID, () => {

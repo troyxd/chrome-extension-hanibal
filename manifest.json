@@ -11,7 +11,7 @@
     "https://*.hanibal.cz/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
@@ -19,7 +19,7 @@
         "https://*.hanibal.cz/*"
       ],
       "js": [
-        "contentScript.js"
+        "src/contentScript.js"
       ]
     }
   ],
@@ -40,7 +40,7 @@
       "32": "assets/logo.png"
     },
     "default_title": "Hanibal shoe labels",
-    "default_popup": "popup.html"
+    "default_popup": "src/popup/popup.html"
   },
   "manifest_version": 3
 }
