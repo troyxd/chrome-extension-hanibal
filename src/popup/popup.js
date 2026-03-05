@@ -21,7 +21,7 @@ const editProduct = async (productID) => {
   `;
 
   const saveBtn = productElement.querySelector(".edit-btn");
-  saveBtn.innerHTML = '<img src="assets/save.svg">';
+  saveBtn.innerHTML = '<img src="/assets/save.svg">';
   saveBtn.style = "background-color: #9ede87";
   saveBtn.addEventListener("click", async () => {
     // TODO: this works but is kinda lagy for some reason
@@ -46,8 +46,8 @@ const createProductElement = (productObject) => {
       <p>${productObject.price}</p>
     </div>
     <div class="product-actions">
-      <button class="delete-btn btn"><img src="assets/delete.svg"></button>
-      <button class="edit-btn btn"><img src="assets/edit.svg"></button>
+      <button class="delete-btn btn"><img src="/assets/delete.svg"></button>
+      <button class="edit-btn btn"><img src="/assets/edit.svg"></button>
     </div>
   `
   const deleteBtn = productElement.querySelector(".delete-btn")
@@ -108,7 +108,7 @@ const printProducts = async () => {
     return;
   }
 
-  chrome.tabs.create({ url: "print.html" })
+  chrome.tabs.create({ url: "/src/print/print.html" })
 }
 
 const renderPrintButton = () => {

@@ -1,20 +1,20 @@
 @font-face {
   font-family: 'Squadron';
-  src: url("fonts/Squadron-Regular.otf");
+  src: url("/fonts/Squadron-Regular.otf");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Squadron';
-  src: url("fonts/Squadron-Bold.otf");
+  src: url("/fonts/Squadron-Bold.otf");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Squadron';
-  src: url("fonts/Squadron-LightItalic.otf");
+  src: url("/fonts/Squadron-LightItalic.otf");
   font-weight: normal;
   font-style: italic;
 }

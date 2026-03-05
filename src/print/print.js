@@ -13,7 +13,7 @@ const createLabel = (product) => {
       <p class="product-desc">${product.desc}</p>
     </div>
     <footer class="label-footer">
-      <img src="assets/logo.png" class="shop-logo"></img>
+      <img src="/assets/logo.png" class="shop-logo"></img>
       <span class="product-price">${product.price.toFixed(0)},-</span>
     </footer>
   `
