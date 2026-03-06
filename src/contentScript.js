@@ -106,6 +106,10 @@
 
     const priceString = product.querySelector("div.product-price-block>p").innerText.replace(/[^0-9,]/g, '');
     const productPrice = parseFloat(priceString.replace(',', '.'));
+    const productPriceDMOCElement = product.querySelector(".product-price-dmoc")
+    const productPriceDMOC = productPriceDMOCElement
+      ? parseFloat(productPriceDMOCElement.innerText.replace(/[^0-9,]/g, '').replace(',', '.'))
+      : null;
 
     const productDescription = product.querySelector("p.annotation").innerText;
     const productID = product.querySelector("div.product-code > div:nth-child(2)").innerText;
@@ -115,6 +119,7 @@
       brand: productBrand,
       desc: productDescription,
       price: productPrice,
+      priceDMOC: productPriceDMOC,
       id: productID,
     };
 

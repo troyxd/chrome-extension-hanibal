@@ -1,11 +1,11 @@
 import { fetchParsedProductList } from "../utils.js";
 
-const labelGrid = document.getElementById("label-grid")
+const labelGrid = document.getElementById("label-grid");
 
 const createLabel = (product) => {
-  const label = document.createElement("div")
+  const label = document.createElement("div");
 
-  label.className = "label"
+  label.className = "label";
   label.innerHTML = `
     <h1 class="brand-name">${product.brand}</h1>
     <h2 class="product-name">${product.name}</h2>
@@ -14,11 +14,14 @@ const createLabel = (product) => {
     </div>
     <footer class="label-footer">
       <img src="/assets/logo.png" class="shop-logo"></img>
-      <span class="product-price">${product.price.toFixed(0)},-</span>
+      <div class="price-section">
+        ${product.priceDMOC ? `<span class="product-price-dmoc">${product.priceDMOC.toFixed(0)},-</span>` : ''}
+        <span class="product-price">${product.price.toFixed(0)},-</span>
+      </div>
     </footer>
-  `
+  `;
 
-  labelGrid.appendChild(label)
+  labelGrid.appendChild(label);
 }
 
 // get products from storage
@@ -34,4 +37,4 @@ for (const product of Object.values(productList)) {
 // Small timeout to ensure fonts are loaded
 setTimeout(() => {
   window.print();
-}, 100);;
+}, 100);

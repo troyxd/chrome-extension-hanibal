@@ -25,6 +25,7 @@
   --brand-font-size: 20pt;
   --name-font-size: 18pt;
   --price-font-size: 25pt;
+  --price-dmoc-font-size: 17pt;
   --desc-font-size: 11pt;
 }
 
@@ -111,6 +112,20 @@ body {
 .shop-logo {
   height: 12mm;
   width: auto;
+}
+
+.price-section {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+}
+
+.product-price-dmoc {
+  font-size: var(--price-dmoc-font-size);
+  font-style: italic;
+  color: #707070;
+  text-decoration: line-through;
+  padding-bottom: 4px;
 }
 
 .product-price {
