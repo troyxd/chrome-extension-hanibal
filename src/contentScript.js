@@ -21,43 +21,6 @@
     }
   }
 
-  const BRAND_NAMES = [
-    "Asolo",
-    "Ocún",
-    "Ocun",
-    "Warmpeace",
-    "Alfa",
-    "Altra",
-    "Astral",
-    "Atsko",
-    "Black Diamond",
-    "Bosky",
-    "Camp",
-    "Columbia",
-    "EB",
-    "Extremities",
-    "Fibertec",
-    "Fitwell",
-    "Hanibal",
-    "Hanwag",
-    "KamPak",
-    "Kayland",
-    "La Sportiva",
-    "Lizard",
-    "Lowa",
-    "Meindl",
-    "Oboz",
-    "Rab",
-    "Salewa",
-    "Saluber",
-    "Sir Joseph",
-    "Source",
-    "Tenaya",
-    "Topo Athletic",
-    "Woolpower",
-    "Yate"
-  ]
-
   const createAddButton = (parentElement) => {
     console.log("Adding add button to submit block");
     const addBtn = document.createElement("img");
@@ -119,19 +82,18 @@
     globalObserver.observe(document.body, observerConfig);
   };
 
-  const parseProductTitle = (title) => {
+  const parseNameFromProductTitle = (title, brandName) => {
     if (typeof title != 'string' && !(title instanceof String)) {
       return { name: '', brand: '' };
     }
 
-    for (const brandName of BRAND_NAMES) {
-      const index = title.indexOf(brandName);
-      if (index != -1) {
-        return { name: title.substring(index + brandName.length + 1), brand: brandName }
-      }
+    const index = title.indexOf(brandName);
+    if (index === -1) {
+      // brand name not found in title, return the whole title as name
+      return title;
     }
 
-    return { name: '', brand: '' };
+    return title.substring(index + brandName.length + 1);
   }
 
   const addNewItemEventHandler = () => {
@@ -139,11 +101,8 @@
     const product = document.getElementsByClassName("main product-main")[0];
 
     const productTitle = product.querySelector("h1.h2").innerText;
-    const { name: productName, brand: productBrand } = parseProductTitle(productTitle);
-    if (productName === '' || productBrand === '') {
-      // product brand isn't in the list of BRAND_NAMES (which means it probably isn't shoes)
-      return;
-    }
+    const productBrand = product.querySelector("#tabs-2 .producer-name").innerText;
+    const productName = parseNameFromProductTitle(productTitle, productBrand);
 
     const priceString = product.querySelector("div.product-price-block>p").innerText.replace(/[^0-9,]/g, '');
     const productPrice = parseFloat(priceString.replace(',', '.'));
